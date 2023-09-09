@@ -43,6 +43,18 @@ function eliminarTarea (id) {
 };
 
 eliminarTarea("tarea4");
+    
+function completarTarea ( id ) {
+
+    let tareaCompletada = listaDeTareas.find(tarea => tarea.id === id);
+    
+    if(tareaCompletada) {
+        tareaCompletada.estaCompletada = true;
+    };
+};
+
+completarTarea("tarea1");
+completarTarea("tarea2");
 
 mostrarTareas();
 

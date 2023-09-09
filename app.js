@@ -14,7 +14,6 @@ function mostrarTareas (){
 }
 
 
-
 function añadirTarea(id, descripcion){
 
     let nuevaTarea = {
@@ -30,7 +29,6 @@ function añadirTarea(id, descripcion){
 añadirTarea("tarea3", "bañarme");
 añadirTarea("tarea4", "desayunar");
 añadirTarea("tarea5", "hacer ejercicio");
-
 
 
 function eliminarTarea (id) {

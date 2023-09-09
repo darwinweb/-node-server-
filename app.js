@@ -1,8 +1,3 @@
-// const { saludar, saludo2 } = require('./saludos.js')
-
-// console.log(saludar("Darwin"));
-// console.log(saludo2());
-
 let listaDeTareas = [{
     id: "tarea1",
     descripcion: "sacar al perro",
@@ -47,7 +42,7 @@ eliminarTarea("tarea4");
 function completarTarea ( id ) {
 
     let tareaCompletada = listaDeTareas.find(tarea => tarea.id === id);
-    
+
     if(tareaCompletada) {
         tareaCompletada.estaCompletada = true;
     };

@@ -1,100 +1,84 @@
-const readline = require('node:readline');
+// const readline = require('node:readline');
 
 let listaDeTareas = [{
     id: "1",
-    descripcion: "sacar al perro",
-    estaCompletada: false
+    descripcion: "Sacar al perro",
+    estado: 'Pendiente'
 },
 {
     id: "2",
-    descripcion: "pagar la luz",
-    estaCompletada: false 
+    descripcion: "Pagar la luz",
+    estado: 'Pendiente' 
 }];
 
 function mostrarTareas (){
     console.log(listaDeTareas);
 }
 
-
-function agregarTarea(id, descripcion){
-
-    let nuevaTarea = {
-        id:id,
-        descripcion: descripcion,
-        estaCompletada: false
-    };
-
-    listaDeTareas.push(nuevaTarea);
+function agregarTarea(id, descripcion, estado) {
+    return new Promise((resolve, reject) => {
+        const nuevaTarea = {
+            id:id,
+            descripcion: descripcion,
+            estado: estado
+        };
+        listaDeTareas.push(nuevaTarea);
+        console.log('Tarea agregada:', nuevaTarea);
+        resolve(nuevaTarea);
+    });
    
 };
 
-agregarTarea("3", "bañarme");
-agregarTarea("4", "desayunar");
-agregarTarea("5", "hacer ejercicio");
-
 
 function eliminarTarea (id) {
-    listaDeTareas = listaDeTareas.filter(tarea => tarea.id !== id )
+    return new Promise((resolve, reject)=> {
+        listaDeTareas = listaDeTareas.filter(tarea => tarea.id !== id);
+        resolve()
+    })
 };
 
-eliminarTarea("4");
-    
+
 function completarTarea ( id ) {
-
-    let tareaCompletada = listaDeTareas.find(tarea => tarea.id === id);
-
-    if(tareaCompletada) {
-        tareaCompletada.estaCompletada = true;
-    } else {
-        console.log('no se encontro la tarea');
-    }
+    return new Promise((resolve, reject)=> {
+        let tarea = listaDeTareas.find(tarea => tarea.id === id);
+        if(tarea) {
+            tarea.estado = "Hecho";
+            resolve(tarea);
+        } else {
+            console.log('No se encontro la tarea');
+            reject('tarea no encontrada')
+        };
+        
+    });
+    
 };
 
-completarTarea("1");
-completarTarea("2");
+completarTarea("1")
+  .then(resultado => {
+    console.log('Tarea completada:', resultado);
+  })
+  .catch(error => {
+    console.error(error);
+  });
+
+async function comandos() {
+    await agregarTarea("3", "Sacar al perro", 'Pendiente');
+    await agregarTarea("4", "Pagar la luz", 'Pendiente');
+    await agregarTarea("5", "bailar mucho", "pendiente")
+    mostrarTareas();
+  
+    try {
+    //   await completarTarea("1");
+      await eliminarTarea("2");
+      mostrarTareas();
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
 
-const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout,
-});
+  
+  comandos();
 
-rl.question('Elige un comando: (1)mostrar tareas , (2)añadir tarea, (3)completar tarea, (4)Eliminar tarea', (respuesta) => {
-     
-     console.log(`Haz elegido ${respuesta}`)
 
-     switch (respuesta) {
-        case '1':
-            console.log(mostrarTareas())
-            break;
-            case '2':
-                rl.question('Ingrese el ID de la nueva tarea: ', (id) => {
-                    rl.question('Ingrese la descripción de la nueva tarea: ', (descripcion) => {
-                        rl.question('¿La tarea está completada? (true/false): ', (estaCompletada) => {
-                            agregarTarea(id, descripcion, estaCompletada === 'false');
-                            console.log('Tarea agregada con éxito.');
-                            rl.close();
-                        });
-                    });
-                });
-            break;
-        case '3':
-            rl.question('ingrese el id de la tarea que desea completar: ', (id)=> {
-                completarTarea( id );
-                console.log('Tarea completada con éxito.');
-                rl.close();
-            });
-            break;
-        case '4':
-            rl.question('ingrese el id de la tarea que desea eliminar: ', (id)=> {
-                eliminarTarea( id );
-                console.log('Tarea elimanada con éxito.');
-                rl.close();            
-           });
-           break;
-           default:
-            console.log('Comando no reconocido.');
-            rl.close();
-            break;
-      
-    }});
+

@@ -1,5 +1,3 @@
-// const readline = require('node:readline');
-
 let listaDeTareas = [{
     id: "1",
     descripcion: "Sacar al perro",
@@ -68,7 +66,7 @@ async function comandos() {
     mostrarTareas();
   
     try {
-    //   await completarTarea("1");
+    
       await eliminarTarea("2");
       mostrarTareas();
     } catch (error) {
